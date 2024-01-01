@@ -1,0 +1,25 @@
+spring:
+  security:
+    oauth2:
+      client:
+        provider:
+          azure:
+            issuer-uri: https://login.microsoftonline.com/f2926779-4c8e-42bd-8995-af81462217d6/v2.0
+            user-name-attribute: name
+        registration:
+          azure-dev:
+            provider: azure
+            client-id: "2e53541c-4b0d-4329-a6f2-feb35bf6b91d"
+            client-secret: "x608Q~21.osF9HOSWkZTbZhNHCZZU0i_WzYEAaUC"
+            scope:
+              - openid
+              - email
+              - profile
+
+# Group mapping
+tannguyen:
+  jwt:
+    authorization:
+      group-to-authorities:
+        "cd67df40-21d7-4431-a145-81b731981f4a": TANNGUYEN_DEV
+        "97cfacee-e81a-4325-a276-04b80664152d": TANNGUYEN_ADMIN
