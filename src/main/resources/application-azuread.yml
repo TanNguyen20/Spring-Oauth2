@@ -11,10 +11,10 @@ spring:
             provider: azure
             client-id: "2e53541c-4b0d-4329-a6f2-feb35bf6b91d"
             client-secret: "x608Q~21.osF9HOSWkZTbZhNHCZZU0i_WzYEAaUC"
+            #            redirect-uri: http://localhost:3000
             scope:
               - openid
               - email
-              - profile
 
 # Group mapping
 tannguyen:

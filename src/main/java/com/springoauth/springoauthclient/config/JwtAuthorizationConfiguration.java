@@ -5,11 +5,11 @@ import com.springoauth.springoauthclient.support.NamedOidcUser;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
+import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.authority.mapping.GrantedAuthoritiesMapper;
 import org.springframework.security.oauth2.client.oidc.userinfo.OidcUserRequest;
 import org.springframework.security.oauth2.client.oidc.userinfo.OidcUserService;
 import org.springframework.security.oauth2.client.userinfo.OAuth2UserService;
@@ -28,11 +28,12 @@ public class JwtAuthorizationConfiguration {
     SecurityFilterChain customJwtSecurityChain(HttpSecurity http, JwtAuthorizationProperties props) throws Exception {
         // @formatter:off
         return http
-          .authorizeHttpRequests( r -> r.requestMatchers("/public/**").permitAll().anyRequest().authenticated())
-          .oauth2Login(oauth2 -> {
-              oauth2.userInfoEndpoint(ep -> 
-                ep.oidcUserService(customOidcUserService(props)));
-          })
+            .cors(Customizer.withDefaults())
+            .sessionManagement(sessionManagement -> sessionManagement.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+            .authorizeHttpRequests( r -> r.requestMatchers("/public/**").permitAll().anyRequest().authenticated())
+            .oauth2Login(oauth2 -> {
+                  oauth2.userInfoEndpoint(ep -> ep.oidcUserService(customOidcUserService(props)));
+            })
         .build();
         // @formatter:on
     }
@@ -57,14 +58,6 @@ public class JwtAuthorizationConfiguration {
         };
     }
 
-
-//    @Bean
-//    GrantedAuthoritiesMapper jwtAuthoritiesMapper(JwtAuthorizationProperties props) {
-//        return new MappingJwtGrantedAuthoritiesMapper(
-//          props.getAuthoritiesPrefix(),
-//          props.getGroupsClaim(),
-//          props.getGroupToAuthorities());
-//    }
 
 
 }

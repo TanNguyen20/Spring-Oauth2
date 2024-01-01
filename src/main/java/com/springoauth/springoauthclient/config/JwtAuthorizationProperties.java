@@ -6,9 +6,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-/**
- * @author Baeldung
- */
 @ConfigurationProperties(prefix = "tannguyen.jwt.authorization")
 public class JwtAuthorizationProperties {
 
