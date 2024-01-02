@@ -1,7 +1,7 @@
 /**
  *
  */
-package com.springoauth.springoauthclient.support;
+package com.springoauth.springoauthclient.model.mapper;
 
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;

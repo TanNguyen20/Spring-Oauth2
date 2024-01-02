@@ -1,6 +1,6 @@
 package com.springoauth.springoauthclient.config;
 
-import com.springoauth.springoauthclient.support.GroupsClaimMapper;
+import com.springoauth.springoauthclient.model.mapper.GroupsClaimMapper;
 import com.springoauth.springoauthclient.support.NamedOidcUser;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
