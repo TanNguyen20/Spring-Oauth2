@@ -13,7 +13,7 @@ public class OIDCController {
 
 
     @GetMapping("/oidc-principal")
-    @PreAuthorize("hasAnyAuthority('BAELDUNG_ADMIN')")
+    @PreAuthorize("hasAnyAuthority('ADMIN')")
     public OidcUser getOidcUserPrincipal(@AuthenticationPrincipal OidcUser principal) {
         return principal;
     }
