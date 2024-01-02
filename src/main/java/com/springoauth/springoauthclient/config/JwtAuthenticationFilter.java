@@ -39,6 +39,9 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
                     throw new IOException("logout");
                 }
             }
+            else {
+                logger.error("JWT token not exist");
+            }
         } catch (Exception ex) {
             logger.error("Could not set user authentication in security context", ex);
         }
@@ -57,9 +60,9 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         Cookie[] cookies = request.getCookies();
         if (cookies != null) {
             for (Cookie cookie : cookies) {
-                String accessToken = cookie.getValue();
-                if (accessToken == null) return null;
-                return accessToken;
+                if (cookie.getName().equals("jwtToken")) {
+                    return cookie.getValue();
+                }
             }
         }
         return null;

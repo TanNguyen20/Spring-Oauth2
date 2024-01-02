@@ -31,6 +31,7 @@ public class JwtAuthorizationConfiguration {
     public JwtAuthenticationFilter jwtAuthenticationFilter() {
         return new JwtAuthenticationFilter();
     }
+
     @Autowired
     private OAuth2LoginSuccessHandler oAuth2LoginSuccessHandler;
 
@@ -39,31 +40,24 @@ public class JwtAuthorizationConfiguration {
     SecurityFilterChain customJwtSecurityChain(HttpSecurity http, JwtAuthorizationProperties props) throws Exception {
         // @formatter:off
         return http
-                .cors(Customizer.withDefaults())
-                .authorizeHttpRequests(r -> r.requestMatchers("/oauth2/**").authenticated())
-                .oauth2Login(oauth2 -> {
-                    oauth2.userInfoEndpoint(ep -> ep.oidcUserService(customOidcUserService(props)))
-                            .successHandler(oAuth2LoginSuccessHandler);
-                })
-                .build();
-    }
-
-    @Bean
-    @Order(2)
-    public SecurityFilterChain jwtSecurityFilterChain(HttpSecurity http) throws Exception {
-        http.cors(Customizer.withDefaults())
-                .authorizeHttpRequests(author -> author.requestMatchers("/jwt/**").authenticated())
-                .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
-                .addFilterBefore(jwtAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class);
-        return http.build();
+            .cors(Customizer.withDefaults())
+            .authorizeHttpRequests(r -> r.requestMatchers("/oauth2/**").authenticated())
+            .oauth2Login(oauth2 -> {
+                oauth2.userInfoEndpoint(ep -> ep.oidcUserService(customOidcUserService(props)))
+                .successHandler(oAuth2LoginSuccessHandler);
+            })
+            .authorizeHttpRequests(r -> r.requestMatchers("/api/**").authenticated())
+            .addFilterBefore(jwtAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class)
+            .authorizeHttpRequests(r -> r.anyRequest().permitAll())
+            .build();
     }
 
     private OAuth2UserService<OidcUserRequest, OidcUser> customOidcUserService(JwtAuthorizationProperties props) {
         final OidcUserService delegate = new OidcUserService();
         final GroupsClaimMapper mapper = new GroupsClaimMapper(
-                props.getAuthoritiesPrefix(),
-                props.getGroupsClaim(),
-                props.getGroupToAuthorities());
+            props.getAuthoritiesPrefix(),
+            props.getGroupsClaim(),
+            props.getGroupToAuthorities());
 
         return (userRequest) -> {
             OidcUser oidcUser = delegate.loadUser(userRequest);
@@ -77,6 +71,5 @@ public class JwtAuthorizationConfiguration {
             return oidcUser;
         };
     }
-
 
 }

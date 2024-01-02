@@ -14,7 +14,7 @@ import java.util.Date;
 @Component
 public class JwtProvider {
 
-    private SecretKey jwtSecret;
+    private final String JWT_SECRET = "tannguyentannguyentannguyentannguyentannguyentannguyentannguyentannguyentannguyentannguyentannguyentannguyen";
     @Value("${app.jwtExpirationInMs}")
     private int jwtExpirationInMs;
 
@@ -23,18 +23,16 @@ public class JwtProvider {
         Date now = new Date();
         Date expiryDate = new Date(now.getTime() + jwtExpirationInMs);
 
-        jwtSecret = Keys.secretKeyFor(SignatureAlgorithm.HS256);
-
         return Jwts.builder()
                 .setSubject(userPrincipal.getAttribute("email"))
                 .setIssuedAt(new Date())
                 .setExpiration(expiryDate)
-                .signWith(jwtSecret)
+                .signWith(SignatureAlgorithm.HS512, JWT_SECRET)
                 .compact();
     }
 
     public String getUserUsernameFromJWT(String token) {
-        Claims claims = Jwts.parserBuilder().setSigningKey(jwtSecret).build()
+        Claims claims = Jwts.parserBuilder().setSigningKey(JWT_SECRET).build()
                 .parseClaimsJws(token)
                 .getBody();
         return claims.getSubject();
@@ -43,7 +41,7 @@ public class JwtProvider {
     public boolean validateToken(String authToken) {
         try {
             Jwts.parserBuilder()
-                    .setSigningKey(jwtSecret)
+                    .setSigningKey(JWT_SECRET)
                     .build()
                     .parseClaimsJws(authToken);
             return true;
