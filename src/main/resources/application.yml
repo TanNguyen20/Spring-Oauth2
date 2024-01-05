@@ -3,7 +3,7 @@ spring:
     url: jdbc:mysql://localhost:3306/oauth2?createDatabaseIfNotExist=true
     driver-class-name: com.mysql.cj.jdbc.Driver
     username: root
-    password: 2322000@Vtt
+    password: nguyentan
   jpa:
     hibernate:
       ddl-auto: update
@@ -31,7 +31,7 @@ tannguyen:
     authorization:
       group-to-authorities:
         "cd67df40-21d7-4431-a145-81b731981f4a": DEV
-        "97cfacee-e81a-4325-a276-04b80664152d": ADMIN
+        "97cfacee-e81a-4325-a276-04b80664152d": TEST
 
 app:
   jwtExpirationInMs: 864000000
