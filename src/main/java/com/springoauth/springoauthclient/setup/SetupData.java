@@ -1,25 +1,15 @@
 package com.springoauth.springoauthclient.setup;
 
-import java.util.Arrays;
-import java.util.HashSet;
-
 import com.springoauth.springoauthclient.model.dao.OrganizationRepository;
 import com.springoauth.springoauthclient.model.dao.PrivilegeRepository;
-import com.springoauth.springoauthclient.model.dao.UserRepository;
 import com.springoauth.springoauthclient.model.entity.Organization;
 import com.springoauth.springoauthclient.model.entity.Privilege;
-import com.springoauth.springoauthclient.model.entity.User;
 import jakarta.annotation.PostConstruct;
-
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 
 @Component
 public class SetupData {
-
-    @Autowired
-    private UserRepository userRepository;
 
     @Autowired
     private PrivilegeRepository privilegeRepository;
@@ -27,33 +17,10 @@ public class SetupData {
     @Autowired
     private OrganizationRepository organizationRepository;
 
-    @Autowired
-    private PasswordEncoder encoder;
-
     @PostConstruct
     public void init() {
         initOrganizations();
         initPrivileges();
-        initUsers();
-    }
-
-    private void initUsers() {
-        final Privilege privilege1 = privilegeRepository.findByName("FOO_READ_PRIVILEGE");
-        final Privilege privilege2 = privilegeRepository.findByName("FOO_WRITE_PRIVILEGE");
-
-        final User user1 = new User();
-        user1.setUsername("john");
-        user1.setPassword(encoder.encode("123"));
-        user1.setPrivileges(new HashSet<>(Arrays.asList(privilege1)));
-        user1.setOrganization(organizationRepository.findByName("FirstOrg"));
-        userRepository.save(user1);
-
-        final User user2 = new User();
-        user2.setUsername("tom");
-        user2.setPassword(encoder.encode("111"));
-        user2.setPrivileges(new HashSet<>(Arrays.asList(privilege1, privilege2)));
-        user2.setOrganization(organizationRepository.findByName("SecondOrg"));
-        userRepository.save(user2);
     }
 
     private void initOrganizations() {

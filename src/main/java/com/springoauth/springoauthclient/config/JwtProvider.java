@@ -11,7 +11,6 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.oauth2.core.user.DefaultOAuth2User;
-import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.stereotype.Component;
 
 import javax.crypto.SecretKey;
@@ -50,7 +49,6 @@ public class JwtProvider {
                 .toList();
 
 
-
         // Extract all attributes as claims
         Map<String, Object> attributes = principal.getAttributes();
 
@@ -60,7 +58,7 @@ public class JwtProvider {
         return Jwts.builder()
                 .setSubject(subject)
                 .addClaims(attributes)
-                .claim("principal",principal.getName())
+                .claim("principal", principal.getName())
                 .claim("credentials", credentials)
                 .claim("authorities", roles)
                 .setIssuedAt(issuedAt)

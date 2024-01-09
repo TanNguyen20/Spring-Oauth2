@@ -1,10 +1,10 @@
 package com.springoauth.springoauthclient.config;
 
-import java.io.Serializable;
-
 import org.springframework.security.access.PermissionEvaluator;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
+
+import java.io.Serializable;
 
 public class CustomPermissionEvaluator implements PermissionEvaluator {
 

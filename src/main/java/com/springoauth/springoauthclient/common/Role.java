@@ -7,7 +7,7 @@ import java.util.List;
 
 public class Role {
 
-    public static String getHighestRole(Collection<? extends  GrantedAuthority> authorities) {
+    public static String getHighestRole(Collection<? extends GrantedAuthority> authorities) {
         List roles = authorities.stream().map(grantedAuthority -> {
             return grantedAuthority.getAuthority();
         }).toList();

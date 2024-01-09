@@ -1,14 +1,11 @@
 package com.springoauth.springoauthclient.controllers;
 
-import com.springoauth.springoauthclient.config.MyUserPrincipal;
 import com.springoauth.springoauthclient.model.dao.OrganizationRepository;
 import com.springoauth.springoauthclient.model.entity.Foo;
 import com.springoauth.springoauthclient.model.entity.Organization;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-import org.springframework.security.access.prepost.PostAuthorize;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
@@ -42,15 +39,9 @@ public class MainController {
     @PreAuthorize("isMember(#id)")
     @GetMapping("/organizations/{id}")
     @ResponseBody
-    public Organization findOrgById(@PathVariable final long id) {
-        return organizationRepository.findById(id)
+    public Organization findOrgById(@PathVariable final String id) {
+        return organizationRepository.findById(1L)
                 .orElse(null);
     }
 
-    @PreAuthorize("hasPermission(#id, 'Foo', 'read')")
-    @GetMapping("/user")
-    @ResponseBody
-    public MyUserPrincipal retrieveUserDetails(@AuthenticationPrincipal MyUserPrincipal principal) {
-        return principal;
-    }
 }

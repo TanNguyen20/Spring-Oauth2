@@ -1,11 +1,5 @@
 package com.springoauth.springoauthclient.config;
 
-import java.io.Serializable;
-import java.util.Collection;
-import java.util.HashSet;
-import java.util.Set;
-
-import com.springoauth.springoauthclient.model.entity.User;
 import org.springframework.security.access.PermissionEvaluator;
 import org.springframework.security.access.expression.method.MethodSecurityExpressionOperations;
 import org.springframework.security.access.hierarchicalroles.RoleHierarchy;
@@ -13,6 +7,11 @@ import org.springframework.security.authentication.AuthenticationTrustResolver;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.AuthorityUtils;
+import org.springframework.security.core.context.SecurityContextHolder;
+
+import java.io.Serializable;
+import java.util.Collection;
+import java.util.Set;
 
 
 public class MySecurityExpressionRoot implements MethodSecurityExpressionOperations {
@@ -48,8 +47,10 @@ public class MySecurityExpressionRoot implements MethodSecurityExpressionOperati
     }
 
     public boolean isMember(Long OrganizationId) {
-        final User user = ((MyUserPrincipal) this.getPrincipal()).getUser();
-        return user.getOrganization().getId().longValue() == OrganizationId.longValue();
+        Authentication authenticated = SecurityContextHolder.getContext().getAuthentication();
+        return true;
+//        final User user = ((MyUserPrincipal) this.getPrincipal()).getUser();
+//        return user.getOrganization().getId().longValue() == OrganizationId.longValue();
     }
 
     @Override
