@@ -56,7 +56,7 @@ public class OAuth2SuccessHandler extends SavedRequestAwareAuthenticationSuccess
             if (jwtToken != null) {
                 log.info("SETTING COOKIE");
                 ResponseCookie springCookie = ResponseCookie.from("jwtToken", jwtToken)
-                        .httpOnly(true)
+                        .httpOnly(false)
                         .secure(false)
                         .path("/")
                         .maxAge(86400)
